@@ -239,7 +239,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected <T> T doGetBean(final String name, @Nullable final Class<T> requiredType,
 			@Nullable final Object[] args, boolean typeCheckOnly) throws BeansException {
 
-		final String beanName = transformedBeanName(name);
+		final String beanName = transformedBeanName(name);//获取bean名称，如果有别名，处理别名
 		Object bean;
 
 		// Eagerly check singleton cache for manually registered singletons.
@@ -254,7 +254,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					logger.debug("Returning cached instance of singleton bean '" + beanName + "'");
 				}
 			}
-			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
+			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);//获取bean实例
 		}
 
 		else {
@@ -373,7 +373,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		}
 
 		// Check if required type matches the type of the actual bean instance.
-		if (requiredType != null && !requiredType.isInstance(bean)) {
+		if (requiredType != null && !requiredType.isInstance(bean)) {//bean配置文件是否有"byType"属性
 			try {
 				T convertedBean = getTypeConverter().convertIfNecessary(bean, requiredType);
 				if (convertedBean == null) {
@@ -1631,7 +1631,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		}
 
 		Object object = null;
-		if (mbd == null) {
+		if (mbd == null) {//从缓存中缓存实例的bean
 			object = getCachedObjectForFactoryBean(beanName);
 		}
 		if (object == null) {

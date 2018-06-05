@@ -1174,11 +1174,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	protected Object getObjectForBeanInstance(
 			Object beanInstance, String name, String beanName, @Nullable RootBeanDefinition mbd) {
 
-		String currentlyCreatedBean = this.currentlyCreatedBean.get();
-		if (currentlyCreatedBean != null) {
+		String currentlyCreatedBean = this.currentlyCreatedBean.get();//NamedThreadLocal继承ThreadLocal，线程隔离。保证每个线程都拿到不同的实例对象
+		if (currentlyCreatedBean != null) {//设置dependentBeanMap缓存
 			registerDependentBean(beanName, currentlyCreatedBean);
 		}
-
+		//返回bean实例
 		return super.getObjectForBeanInstance(beanInstance, name, beanName, mbd);
 	}
 
