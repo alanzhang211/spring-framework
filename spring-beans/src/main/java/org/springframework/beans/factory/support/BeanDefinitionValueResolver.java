@@ -354,6 +354,7 @@ class BeanDefinitionValueResolver {
 			Object bean;
 			String refName = ref.getBeanName();
 			refName = String.valueOf(doEvaluate(refName));
+			//如果ref在双亲ioc容器中，则去双亲ioc容器中获取
 			if (ref.isToParent()) {
 				if (this.beanFactory.getParentBeanFactory() == null) {
 					throw new BeanCreationException(
@@ -364,6 +365,7 @@ class BeanDefinitionValueResolver {
 				bean = this.beanFactory.getParentBeanFactory().getBean(refName);
 			}
 			else {
+				//自身ioc容器获取
 				bean = this.beanFactory.getBean(refName);
 				this.beanFactory.registerDependentBean(refName, this.beanName);
 			}

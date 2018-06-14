@@ -128,7 +128,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 		}
 		try {//创建默认beanFactory，通过反射获取实例，放入工厂容器（一个ConcurrentHashMap存储）
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
-			beanFactory.setSerializationId(getId());//serialized id什么用？存储为WeakReference
+			beanFactory.setSerializationId(getId());//serialized id，存储为WeakReference
 			customizeBeanFactory(beanFactory);
 			loadBeanDefinitions(beanFactory);//解析xml文件，存储到beanDefinitionMap中
 			synchronized (this.beanFactoryMonitor) {

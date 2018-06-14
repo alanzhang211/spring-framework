@@ -514,7 +514,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
-		synchronized (this.startupShutdownMonitor) {//加锁，只允许一个线程处理
+		//加锁，只允许一个线程处理
+		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
 			prepareRefresh();//加载配置文件，设置Spring容器的启动时间，撤销关闭状态，开启活跃状态；初始化Property资源；验证环境信息。
 
@@ -529,10 +530,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
-				postProcessBeanFactory(beanFactory);//postProcessBeanFactory()默认空实现，用于子类去扩展修改beanfactory的设置
+				//postProcessBeanFactory()默认空实现，用于子类去扩展修改beanfactory的设置
+				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
-				invokeBeanFactoryPostProcessors(beanFactory);//实例化和调用所用注册了BeanFactoryPostProcessor的beans,执行时候按照顺序,必须在实例化单例之前调用
+				//实例化和调用所用注册了BeanFactoryPostProcessor的beans,执行时候按照顺序,必须在实例化单例之前调用
+				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
 				//从Spring容器中找出实现BeanPostProcessor接口的bean，并设置到BeanFactory的属性中。之后bean被实例化的时候会调用这个BeanPostProcessor。
@@ -545,13 +548,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				initApplicationEventMulticaster();//初始化事件广播器，事件广播器用于事件的发布
 
 				// Initialize other special beans in specific context subclasses.
-				onRefresh();//一个模板方法，默认空实现，不同的Spring容器做不同的事情
+				onRefresh();//一个模板方法，默认空实现，不同的Spring容器做不同的实现
 
 				// Check for listener beans and register them.
 				registerListeners();//注册listener；广播earlyApplicationEvents
 
 				// Instantiate all remaining (non-lazy-init) singletons.
-				finishBeanFactoryInitialization(beanFactory);//实例化BeanFactory中已经被注册但是未实例化的所有实例，委托给beanfactory的getBean方法。
+				//实例化BeanFactory中已经被注册但是未实例化的所有实例，委托给beanfactory的getBean方法。
+				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
 				//refresh收尾工作:
